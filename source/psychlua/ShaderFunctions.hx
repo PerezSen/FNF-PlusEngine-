@@ -268,28 +268,27 @@ class ShaderFunctions
 			return false;
 			#end
 		});
+		
 		Lua_helper.add_callback(lua, "tweenShaderFloat", function(tag:String, prop:String, values:Float, time:Float, ease:String = 'linear') {
         #if (!flash && MODS_ALLOWED && sys)
-
-    var obj:String = tag; 
-    
-    var shader:FlxRuntimeShader = getShader(obj);
-    if(shader == null) {
+        var obj:String = tag; 
+        var shader:FlxRuntimeShader = getShader(obj);
+        if(shader == null) 
+		{
         FunkinLua.luaTrace("tweenShaderFloat: ¡El objeto '" + obj + "' no tiene un shader o no existe!", false, false, FlxColor.RED);
         return false;
-    }
+        }
+			
+        var target:Dynamic = LuaUtils.tweenPrepare(tag, prop);
+        var modchartTweens = PlayState.instance.modchartTweens;
 
-   
-    var target:Dynamic = LuaUtils.tweenPrepare(tag, prop);
-    var modchartTweens = PlayState.instance.modchartTweens;
-
-    if(tag != null && modchartTweens.exists(tag)) {
+        if(tag != null && modchartTweens.exists(tag)) 
+		{
         modchartTweens.get(tag).cancel();
         modchartTweens.remove(tag);
-    }
-
-    
-    var newTween = FlxTween.num(shader.getFloat(prop), values, time, {
+        }
+		
+        var newTween = FlxTween.num(shader.getFloat(prop), values, time, {
         ease: LuaUtils.getTweenEaseByString(ease),
         onComplete: function(twn:FlxTween) {
             shader.setFloat(prop, values); 
@@ -297,19 +296,20 @@ class ShaderFunctions
                 PlayState.instance.callOnLuas("onShaderCompleted", [tag, prop]);
             }
             modchartTweens.remove(tag);
-        }
-    }, function(num:Float) {
-        shader.setFloat(prop, num);
-    });
+            }
+			
+            }, function(num:Float) {
+		   shader.setFloat(prop, num);
+			});
 
-    if(tag != null) modchartTweens.set(tag, newTween);
-
-    return true;
+       if(tag != null) modchartTweens.set(tag, newTween);
+			
+       return true;
     #else
-    FunkinLua.luaTrace("tweenShaderFloat: ¡Plataforma no compatible con Shaders!", false, false, FlxColor.RED);
-    return false;
-    #end
-});
+       FunkinLua.luaTrace("tweenShaderFloat: ¡Plataforma no compatible con Shaders!", false, false, FlxColor.RED);
+       return false;
+		#end
+      });
 	}
 	
 	#if (!flash && MODS_ALLOWED && sys)
