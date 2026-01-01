@@ -270,46 +270,39 @@ class ShaderFunctions
 		});
 		
 		Lua_helper.add_callback(lua, "tweenShaderFloat", function(tag:String, prop:String, values:Float, time:Float, ease:String = 'linear') {
-            #if (!flash && MODS_ALLOWED && sys)
-            var obj:String = tag; 
-            var shader:FlxRuntimeShader = getShader(obj);
-            if(shader == null) 
-		    {
-            FunkinLua.luaTrace("tweenShaderFloat: ¡El objeto '" + obj + "' no tiene un shader o no existe!", false, false, FlxColor.RED);
-            return false;
-            }
-			
-            var target:Dynamic = LuaUtils.tweenPrepare(tag, prop);
-            var modchartTweens = PlayState.instance.modchartTweens;
-
-            if(tag != null && modchartTweens.exists(tag)) 
-	    	{
-            modchartTweens.get(tag).cancel();
-            modchartTweens.remove(tag);
-            }
+		    #if (!flash && MODS_ALLOWED && sys)
+		    var obj:String = tag;
+		    var shader:FlxRuntimeShader = getShader(obj);
+		    if(shader == null) {
+		        FunkinLua.luaTrace("tweenShaderFloat: Error shader null", false, false, FlxColor.RED);
+		        return false;
+		    }
 		
-            var newTween = FlxTween.num(shader.getFloat(prop), values, time, {
-            ease: LuaUtils.getTweenEaseByString(ease),
-            onComplete: function(twn:FlxTween) {
-                shader.setFloat(prop, values); 
-                if (PlayState.instance != null) {
-                    PlayState.instance.callOnLuas("onShaderCompleted", [tag, prop]);
-                }
-                modchartTweens.remove(tag);
-                }
-			
-                }, function(num:Float) {
-		       shader.setFloat(prop, num);
-		    	});
-
-           if(tag != null) modchartTweens.set(tag, newTween);
-			
-           return true;
-            #else
-           FunkinLua.luaTrace("tweenShaderFloat: ¡Plataforma no compatible con Shaders!", false, false, FlxColor.RED);
-           return false;
-	    	#end
-       });
+		    var modchartTweens = PlayState.instance.modchartTweens;
+		    if(tag != null && modchartTweens.exists(tag)) {
+		        modchartTweens.get(tag).cancel();
+		        modchartTweens.remove(tag);
+		    }
+		
+		    if(tag != null) {
+		        modchartTweens.set(tag, FlxTween.num(shader.getFloat(prop), values, time, {
+		            ease: LuaUtils.getTweenEaseByString(ease),
+		            onComplete: function(twn:FlxTween) {
+		                modchartTweens.remove(tag);
+		                shader.setFloat(prop, values);
+		                if (PlayState.instance != null)
+		                    PlayState.instance.callOnLuas("onShaderCompleted", [tag, prop]);
+		            }
+		        }, function(num:Float) {
+		            shader.setFloat(prop, num);
+		        }));
+		    }
+		
+		    return true;
+		    #else
+		    return false;
+		    #end
+		});
 	}
 	
 	#if (!flash && MODS_ALLOWED && sys)
