@@ -312,11 +312,11 @@ class ShaderFunctions
     	Lua_helper.add_callback(lua, "cancelShaderTween", function(tag:String, prop:String) {
 		    var tweenTag:String = tag + "_" + prop;
 		    var modchartTweens = PlayState.instance.modchartTweens;
-		    var twn:FlxTween = modchartTweens.get(tweenTag);
+		    var twn = modchartTweens.get(tweenTag);
 		        if(twn != null) {
 		            twn.cancel();
 		            twn.destroy();
-					modchartTweens.remove(tweenTag); 
+					modchartTweens.remove(tweenTag);  
 				}
 		});
 	}
