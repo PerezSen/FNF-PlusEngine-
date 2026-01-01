@@ -269,7 +269,7 @@ class ShaderFunctions
 			#end
 		});
 
-		Lua_helper.add_callback(lua, "tweenShaderFloat", function(tag:String, obj:String, prop:String, values:Float, time:Float, ease:String = 'linear') {
+		Lua_helper.add_callback(lua, "tweenShaderFloat", function(tag:String, obj:String, prop:String, values:Float, time:Float, ease:String = 'linear') { // espero y funcione :v
             #if (!flash && MODS_ALLOWED && sys)
             var shader:FlxRuntimeShader = getShader(obj);
             if(shader == null) 
