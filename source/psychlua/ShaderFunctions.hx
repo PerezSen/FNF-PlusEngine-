@@ -310,26 +310,14 @@ class ShaderFunctions
 });
 
     	Lua_helper.add_callback(lua, "cancelShaderTween", function(tag:String, prop:String) {
-		    #if (!flash && MODS_ALLOWED && sys)
 		    var tweenTag:String = tag + "_" + prop;
 		    var modchartTweens = PlayState.instance.modchartTweens;
-		
-
-		    if(modchartTweens.exists(tweenTag)) {
-		        var twn = modchartTweens.get(tweenTag);
+		        var twn:FlxTween = modchartTweens.get(tweenTag);
 		        if(twn != null) {
 		            twn.cancel();
-		            twn.destroy(); 
-		        }
-		        
-		        modchartTweens.remove(tweenTag);
-		        return true; 
-		    }
-		
-		    return false; 
-		    #else
-		    return false;
-		    #end
+		            twn.destroy();
+					modchartTweens.remove(tweenTag); 
+				}
 		});
 	}
 	
