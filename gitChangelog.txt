@@ -1,0 +1,11 @@
+- New option for a gradient time bar.
+- New option to use the vanilla Psych transition.
+- New option to hide hold splashes.
+- New option for heavy note support (only notes).
+- New transition sound and achievement unlock.
+- New X button on Android to exit from the Main Menu.
+- Added ModchartTweens, a variable used in Psych 0.7.3.
+- New option for people with color blindness and related conditions.
+- You can now load JSON in V-Slice format.
+- New LuaPath modifier fixed.
+- And More...
