@@ -10,7 +10,8 @@ class ShaderFunctions
 	public static function implement(funk:FunkinLua)
 	{
 		var lua = funk.lua;
-		// shader shit
+
+		// Initialize shader
 		funk.addLocalCallback("initLuaShader", function(name:String) {
 			if(!ClientPrefs.data.shaders) return false;
 
@@ -21,7 +22,8 @@ class ShaderFunctions
 			#end
 			return false;
 		});
-		
+
+		// Set shader on sprite
 		funk.addLocalCallback("setSpriteShader", function(obj:String, shader:String) {
 			if(!ClientPrefs.data.shaders) return false;
 
@@ -40,10 +42,10 @@ class ShaderFunctions
 
 			if(leObj != null) {
 				var arr:Array<String> = funk.runtimeShaders.get(shader);
-				
+
 				// Adapt shader code for compatibility if needed
 				var adapted = shaders.ShaderCompatibility.adaptShaderCode(arr[0], arr[1]);
-				
+
 				leObj.shader = new shaders.ErrorHandledShader.ErrorHandledRuntimeShader(shader, adapted[0], adapted[1]);
 				return true;
 			}
@@ -52,6 +54,8 @@ class ShaderFunctions
 			#end
 			return false;
 		});
+
+		// Remove shader from sprite
 		Lua_helper.add_callback(lua, "removeSpriteShader", function(obj:String) {
 			var split:Array<String> = obj.split('.');
 			var leObj:FlxSprite = LuaUtils.getObjectDirectly(split[0]);
@@ -66,7 +70,7 @@ class ShaderFunctions
 			return false;
 		});
 
-
+		// Get shader bool
 		Lua_helper.add_callback(lua, "getShaderBool", function(obj:String, prop:String) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -81,6 +85,8 @@ class ShaderFunctions
 			return null;
 			#end
 		});
+
+		// Get shader bool array
 		Lua_helper.add_callback(lua, "getShaderBoolArray", function(obj:String, prop:String) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -95,6 +101,8 @@ class ShaderFunctions
 			return null;
 			#end
 		});
+
+		// Get shader int
 		Lua_helper.add_callback(lua, "getShaderInt", function(obj:String, prop:String) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -109,6 +117,8 @@ class ShaderFunctions
 			return null;
 			#end
 		});
+
+		// Get shader int array
 		Lua_helper.add_callback(lua, "getShaderIntArray", function(obj:String, prop:String) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -123,6 +133,8 @@ class ShaderFunctions
 			return null;
 			#end
 		});
+
+		// Get shader float
 		Lua_helper.add_callback(lua, "getShaderFloat", function(obj:String, prop:String) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -137,6 +149,8 @@ class ShaderFunctions
 			return null;
 			#end
 		});
+
+		// Get shader float array
 		Lua_helper.add_callback(lua, "getShaderFloatArray", function(obj:String, prop:String) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -152,7 +166,7 @@ class ShaderFunctions
 			#end
 		});
 
-
+		// Set shader bool
 		Lua_helper.add_callback(lua, "setShaderBool", function(obj:String, prop:String, value:Bool) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -168,6 +182,8 @@ class ShaderFunctions
 			return false;
 			#end
 		});
+
+		// Set shader bool array
 		Lua_helper.add_callback(lua, "setShaderBoolArray", function(obj:String, prop:String, values:Dynamic) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -183,6 +199,8 @@ class ShaderFunctions
 			return false;
 			#end
 		});
+
+		// Set shader int
 		Lua_helper.add_callback(lua, "setShaderInt", function(obj:String, prop:String, value:Int) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -198,6 +216,8 @@ class ShaderFunctions
 			return false;
 			#end
 		});
+
+		// Set shader int array
 		Lua_helper.add_callback(lua, "setShaderIntArray", function(obj:String, prop:String, values:Dynamic) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -213,6 +233,8 @@ class ShaderFunctions
 			return false;
 			#end
 		});
+
+		// Set shader float
 		Lua_helper.add_callback(lua, "setShaderFloat", function(obj:String, prop:String, value:Float) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -228,6 +250,8 @@ class ShaderFunctions
 			return false;
 			#end
 		});
+
+		// Set shader float array
 		Lua_helper.add_callback(lua, "setShaderFloatArray", function(obj:String, prop:String, values:Dynamic) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -236,7 +260,6 @@ class ShaderFunctions
 				FunkinLua.luaTrace("setShaderFloatArray: Shader is not FlxRuntimeShader!", false, false, FlxColor.RED);
 				return false;
 			}
-
 			shader.setFloatArray(prop, values);
 			return true;
 			#else
@@ -245,6 +268,7 @@ class ShaderFunctions
 			#end
 		});
 
+		// Set shader sampler 2D
 		Lua_helper.add_callback(lua, "setShaderSampler2D", function(obj:String, prop:String, bitmapdataPath:String) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
@@ -254,11 +278,9 @@ class ShaderFunctions
 				return false;
 			}
 
-			// trace('bitmapdatapath: $bitmapdataPath');
 			var value = Paths.image(bitmapdataPath);
 			if(value != null && value.bitmap != null)
 			{
-				// trace('Found bitmapdata. Width: ${value.bitmap.width} Height: ${value.bitmap.height}');
 				shader.setSampler2D(prop, value.bitmap);
 				return true;
 			}
@@ -268,59 +290,61 @@ class ShaderFunctions
 			return false;
 			#end
 		});
-		
+
+		// Tween shader float
 		Lua_helper.add_callback(lua, "tweenShaderFloat", function(tag:String, prop:String, values:Float, time:Float, ease:String = 'linear') {
-		    #if (!flash && MODS_ALLOWED && sys)
-		    var objName:String = tag; 
-		    var tweenTag:String = tag + "_" + prop;
-		    var shader:FlxRuntimeShader = getShader(objName);
-		    
-		    if(shader == null) {
-		        FunkinLua.luaTrace("tweenShaderFloat: Error shader null en " + objName, false, false, FlxColor.RED);
-		        return false;
-		    }
-		
-		    var modchartTweens = PlayState.instance.modchartTweens;
-			
-		    if(tweenTag != null && modchartTweens.exists(tweenTag)) {
-		        modchartTweens.get(tweenTag).cancel();
-		        modchartTweens.remove(tweenTag);
-		    }
-	
-		    if(tweenTag != null) {
-		        modchartTweens.set(tweenTag, FlxTween.num(shader.getFloat(prop), values, time, {
-		            ease: LuaUtils.getTweenEaseByString(ease),
-		            onComplete: function(twn:FlxTween) {
-		                modchartTweens.remove(tweenTag);
-		                
-		                shader.setFloat(prop, values);
-		                if (PlayState.instance != null) {
-		                    PlayState.instance.callOnLuas("onShaderCompleted", [tag, prop]);
-		                }
-		            }
-		        }, function(num:Float) {
-		            shader.setFloat(prop, num);
-		        }));
-    }
+			#if (!flash && MODS_ALLOWED && sys)
+			var objName:String = tag;
+			var tweenTag:String = tag + "_" + prop;
+			var shader:FlxRuntimeShader = getShader(objName);
 
-    return true;
-    #else
-    return false;
-    #end
-});
+			if(shader == null) {
+				FunkinLua.luaTrace("tweenShaderFloat: Error shader null en " + objName, false, false, FlxColor.RED);
+				return false;
+			}
 
-    	Lua_helper.add_callback(lua, "cancelShaderTween", function(tag:String, prop:String) {
-		    var tweenTag:String = tag + "_" + prop;
-		    var modchartTweens = PlayState.instance.modchartTweens;
-		    var twn:FlxTween = modchartTweens.get(tweenTag);
-		        if(twn != null) {
-		            twn.cancel();
-		            twn.destroy();
-					modchartTweens.remove(tweenTag);  
-				}
+			var modchartTweens = PlayState.instance.modchartTweens;
+
+			if(tweenTag != null && modchartTweens.exists(tweenTag)) {
+				modchartTweens.get(tweenTag).cancel();
+				modchartTweens.remove(tweenTag);
+			}
+
+			if(tweenTag != null) {
+				modchartTweens.set(tweenTag, FlxTween.num(shader.getFloat(prop), values, time, {
+					ease: LuaUtils.getTweenEaseByString(ease),
+					onComplete: function(twn:FlxTween) {
+						modchartTweens.remove(tweenTag);
+
+						shader.setFloat(prop, values);
+						if (PlayState.instance != null) {
+							PlayState.instance.callOnLuas("onShaderCompleted", [tag, prop]);
+						}
+					}
+				}, function(num:Float) {
+					shader.setFloat(prop, num);
+				}));
+			}
+
+			return true;
+			#else
+			return false;
+			#end
+		});
+
+		// Cancel shader tween
+		Lua_helper.add_callback(lua, "cancelShaderTween", function(tag:String, prop:String) {
+			var tweenTag:String = tag + "_" + prop;
+			var modchartTweens = PlayState.instance.modchartTweens;
+			var twn:FlxTween = modchartTweens.get(tweenTag);
+			if(twn != null) {
+				twn.cancel();
+				twn.destroy();
+				modchartTweens.remove(tweenTag);
+			}
 		});
 	}
-	
+
 	#if (!flash && MODS_ALLOWED && sys)
 	public static function getShader(obj:String):FlxRuntimeShader
 	{
