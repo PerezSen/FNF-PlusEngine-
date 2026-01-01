@@ -271,38 +271,43 @@ class ShaderFunctions
 		
 		Lua_helper.add_callback(lua, "tweenShaderFloat", function(tag:String, prop:String, values:Float, time:Float, ease:String = 'linear') {
 		    #if (!flash && MODS_ALLOWED && sys)
-		    var obj:String = tag;
-		    var shader:FlxRuntimeShader = getShader(obj);
+		    var objName:String = tag; 
+		    var tweenTag:String = tag + "_" + prop;
+		    var shader:FlxRuntimeShader = getShader(objName);
+		    
 		    if(shader == null) {
-		        FunkinLua.luaTrace("tweenShaderFloat: Error shader null", false, false, FlxColor.RED);
+		        FunkinLua.luaTrace("tweenShaderFloat: Error shader null en " + objName, false, false, FlxColor.RED);
 		        return false;
 		    }
 		
 		    var modchartTweens = PlayState.instance.modchartTweens;
-		    if(tag != null && modchartTweens.exists(tag)) {
-		        modchartTweens.get(tag).cancel();
-		        modchartTweens.remove(tag);
+			
+		    if(tweenTag != null && modchartTweens.exists(tweenTag)) {
+		        modchartTweens.get(tweenTag).cancel();
+		        modchartTweens.remove(tweenTag);
 		    }
-		
-		    if(tag != null) {
-		        modchartTweens.set(tag, FlxTween.num(shader.getFloat(prop), values, time, {
+	
+		    if(tweenTag != null) {
+		        modchartTweens.set(tweenTag, FlxTween.num(shader.getFloat(prop), values, time, {
 		            ease: LuaUtils.getTweenEaseByString(ease),
 		            onComplete: function(twn:FlxTween) {
-		                modchartTweens.remove(tag);
+		                modchartTweens.remove(tweenTag);
+		                
 		                shader.setFloat(prop, values);
-		                if (PlayState.instance != null)
+		                if (PlayState.instance != null) {
 		                    PlayState.instance.callOnLuas("onShaderCompleted", [tag, prop]);
+		                }
 		            }
 		        }, function(num:Float) {
 		            shader.setFloat(prop, num);
 		        }));
-		    }
-		
-		    return true;
-		    #else
-		    return false;
-		    #end
-		});
+    }
+
+    return true;
+    #else
+    return false;
+    #end
+});
 	}
 	
 	#if (!flash && MODS_ALLOWED && sys)
