@@ -313,7 +313,8 @@ class ShaderFunctions
 		    var tweenTag:String = tag + "_" + prop;
 		    var modchartTweens = PlayState.instance.modchartTweens;
 		        var twn:FlxTween = modchartTweens.get(tweenTag);
-		        if(twn != null) {
+		        if(twn != null) 
+				{
 		            twn.cancel();
 		            twn.destroy();
 					modchartTweens.remove(tweenTag); 
