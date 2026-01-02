@@ -28,7 +28,7 @@ import options.Option;
 class MobileOptionsSubState extends BaseOptionsMenu
 {
 	final exControlTypes:Array<String> = ["NONE", "SINGLE", "DOUBLE"];
-	final hintOptions:Array<String> = ["No Gradient", "No Gradient (Old)", "Gradient", "Hidden"];
+	final hintOptions:Array<String> = ["No Gradient", "No Gradient (Old)", "Gradient", "Hidden", "Classic"];
 	var option:Option;
 
 	public function new()
