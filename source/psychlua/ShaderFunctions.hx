@@ -299,7 +299,7 @@ class ShaderFunctions
 			var shader:FlxRuntimeShader = getShader(objName);
 
 			if(shader == null) {
-				FunkinLua.luaTrace("tweenShaderFloat: Error shader null en " + objName, false, false, FlxColor.RED);
+				FunkinLua.luaTrace("tweenShaderFloat: Null shader error in " + objName, false, false, FlxColor.RED);
 				return false;
 			}
 
